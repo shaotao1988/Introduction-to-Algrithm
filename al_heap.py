@@ -39,20 +39,6 @@ class Heap(object):
         for i in range(self.heap_size//2, -1, -1):
             self.max_heapify(i)
 
-    def heap_sort(self):
-        self.make_max_heap()
-
-
-class HeapSort(Heap):
-    def __init__(self, data):
-        Heap.__init__(self, data)
-
-    def heap_sort(self):
-        self.make_max_heap()
-        for i in range(self.heap_size-1, 0, -1):
-            self.data[i], self.data[0] = self.data[0], self.data[i]
-            self.heap_size -= 1
-            self.max_heapify(0)
 
 class MaxPriorityQueue(Heap):
     def __init__(self, data):
@@ -91,13 +77,6 @@ class MaxPriorityQueue(Heap):
 
 if __name__ == "__main__":
     testdata = [2, 3, 25, 12, 5, 6, 67, 43, 9]
-    
-    result = [2, 3, 5, 6, 9, 12, 25, 43, 67]
-    HR = HeapSort(testdata)
-    HR.heap_sort()
-    if HR.data != result:
-        print("test HeapSort wrong:", HR.data)
-    print(HR.data)
 
     PQ = MaxPriorityQueue(testdata)
     if PQ.maximum() != max(testdata):
