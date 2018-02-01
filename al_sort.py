@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+from al_heap import Heap
 
 
 class AlSort(object):
@@ -42,6 +43,17 @@ class AlSort(object):
                 j += 1
                 count += 1
 
+
+class HeapSort(Heap):
+    def __init__(self, data):
+        Heap.__init__(self, data)
+
+    def heap_sort(self):
+        self.make_max_heap()
+        for i in range(self.heap_size-1, 0, -1):
+            self.data[i], self.data[0] = self.data[0], self.data[i]
+            self.heap_size -= 1
+            self.max_heapify(0)
 
 if __name__ == "__main__":
     testdata = [2, 3, 25, 12, 5, 6, 67, 43, 9]
