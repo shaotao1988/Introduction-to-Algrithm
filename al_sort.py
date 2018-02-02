@@ -4,6 +4,27 @@
 import sys
 from al_heap import Heap
 
+class QuickSort(object):
+    def __init__(self, data):
+        self.data = data[:]
+
+    def partition(self, start, end):
+        x = self.data[end]
+        i = start
+        j = start
+        for j in range(start, end):
+            if self.data[j] < x:
+                self.data[i], self.data[j] = self.data[j], self.data[i]
+                i += 1
+            j += 1
+        self.data[i], self.data[end] = self.data[end], self.data[i]
+        return i
+
+    def quick_sort(self, start, end):
+        if start < end:
+            p = self.partition(start, end)
+            self.quick_sort(start, p-1)
+            self.quick_sort(p+1, end)
 
 class AlSort(object):
     def __init__(self, data):
@@ -73,5 +94,10 @@ if __name__ == "__main__":
     if HR.data != result:
         print("test HeapSort wrong:", HR.data)
     print(HR.data)
+    QS = QuickSort(testdata)
+    QS.quick_sort(0, len(testdata)-1)
+    if HR.data != result:
+        print("test QuickSort wrong:", QS.data)
+    print(QS.data)
 
 
