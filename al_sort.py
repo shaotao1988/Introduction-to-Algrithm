@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from al_heap import Heap
+from data_structure import Heap
 
 class QuickSort(object):
     def __init__(self, data):
@@ -16,7 +16,6 @@ class QuickSort(object):
             if self.data[j] < x:
                 self.data[i], self.data[j] = self.data[j], self.data[i]
                 i += 1
-            j += 1
         self.data[i], self.data[end] = self.data[end], self.data[i]
         return i
 
