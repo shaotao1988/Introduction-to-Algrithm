@@ -107,6 +107,7 @@ def lcs_length_top_down_util(x, y, c, ci, cj):
     if ci == 0 or cj == 0:
         c[ci][cj] = 0
         return 0
+    # memorize
     if c[ci][cj] > 0:
         return c[ci][cj]
     if x[ci-1] == y[cj-1]:
