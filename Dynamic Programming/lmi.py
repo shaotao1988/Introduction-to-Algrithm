@@ -38,3 +38,4 @@ def print_lmi(x, s, sq, i):
 if __name__ == '__main__':
     x = [1,2,6,4,3,8,6,5,7,3,4,2,1,9,7,8]
     print(lmi(x))
+    # output: [1, 2, 6, 6, 7, 7, 8]
