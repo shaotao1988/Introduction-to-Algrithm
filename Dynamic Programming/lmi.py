@@ -6,6 +6,8 @@ def lmi(x):
     s = [-1 for _ in range(len(x))]
     largest_index = 0
     for i, xi in enumerate(x[1:], 1):
+        # 遍历0...i-1，时间复杂度O(n^2)
+        # 如果把l变为堆排序或二叉搜索树，每次取最大值来校验，知道找到第一个比xi值小的节点，则时间复杂度为O(nlg(n))
         for j, xj in enumerate(x[0:i]):
             if xj <= xi:
                 #l[i] = max(l[i], l[j]+1)
