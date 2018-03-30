@@ -35,7 +35,8 @@ def recursive_activity_selector(s, f, n):
     # 需要加上a[0]，因为recursive_activity_selector_util找的是a[0]结束后最长的活动个数
     return recursive_activity_selector_util(s, f, 0, n)+1
 
-# 寻找第k+1到n中，a[k]结束后第一个开始的活动
+# 寻找第k+1到n中，a[k]结束后能进行的最多的活动个数
+# 使用贪婪算法， 每次从剩下的活动中寻找最先结束的活动
 def recursive_activity_selector_util(s, f, k, n):
     if k >= n-1:
         return 0
@@ -43,3 +44,22 @@ def recursive_activity_selector_util(s, f, k, n):
     while i <= n-1 and s[i] < f[k]:
         i += 1
     return recursive_activity_selector_util(s, f, i, n)+1
+
+def iterative_activity_selector(s, f, n):
+    k = 0
+    max_activity = 1
+    i = 1
+    while i < n:
+        if s[i] >= f[k]:
+            k = i
+            max_activity += 1
+        i += 1
+    return max_activity
+
+
+
+
+
+
+
+

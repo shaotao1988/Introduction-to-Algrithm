@@ -20,5 +20,8 @@ class TestActivitySelector(unittest.TestCase):
     def test_recursive_activity_selector(self):
         self.assertEqual(recursive_activity_selector(self.s, self.f, len(self.s)), self.largest)
 
+    def test_iterative_activity_selector(self):
+        self.assertEqual(iterative_activity_selector(self.s, self.f, len(self.s)), self.largest)
+
 if __name__ == "__main__":
     unittest.main()
