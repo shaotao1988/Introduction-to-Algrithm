@@ -8,8 +8,8 @@ Represent Graph by adjecent list
 """
 class Graph(object):
     def __init__(self):
-        __vertexes = []
-        __edges = []
+        self.__vertexes = []
+        self.__edges = []
 
     def adjs(self, v):
         return v.adjs
@@ -21,6 +21,7 @@ class Graph(object):
         self.__edges.append(edge)
         self.add_vertex(s)
         self.add_vertex(f)
+        s.add_adj(f)
 
     def add_vertex(self, v):
         if v in self.__vertexes:
@@ -35,7 +36,6 @@ class Graph(object):
     def vertexes(self):
         return self.__vertexes
 
-    @property
     def edge(self, s, f):
         for edge in self.__edges:
             if edge.s == s and edge.f == f:
@@ -44,7 +44,7 @@ class Graph(object):
 
     def __init_vertexes(self):
         for v in self.__vertexes:
-            v.color = WHITE
+            v.color = Color.WHITE
             v.parent = None
 
     # BFS search
@@ -68,14 +68,14 @@ class Graph(object):
         self.__init_vertexes()
         for v in self.__vertexes:
             if v.color == Color.WHITE:
-                self.DFS_visit(G, v)
+                self.DFS_visit(v)
 
     def DFS_visit(self, v):
         v.color = Color.GREY
         for u in self.adjs(v):
             if u.color == Color.WHITE:
                 u.parent = v
-                self.DFS_visit(G, u)
+                self.DFS_visit(u)
         v.color = Color.BLACK
 
     # Find a path starts from s and finishes at f
@@ -102,16 +102,16 @@ class Vertex(object):
         self.key = key
         self.parent = None
         self.color = Color.WHITE
-        self.adjs = []
+        self.__adjs = []
 
     def add_adj(self, adj):
-        if adj in self.adjs:
+        if adj in self.__adjs:
             return
-        self.adjs.append(adj)
+        self.__adjs.append(adj)
 
     @property
     def adjs(self):
-        return self.adjs
+        return self.__adjs
 
 
 
