@@ -1,6 +1,11 @@
 # -*- coding=utf-8 -*-
 from enum import Enum
 
+"""
+WHITE: not visited
+GREY:  visiting
+BLACK: finished visiting
+"""
 Color = Enum('Color', ('WHITE', 'GREY', 'BLACK'))
 
 """

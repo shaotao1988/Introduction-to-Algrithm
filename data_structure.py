@@ -39,9 +39,10 @@ class LinkedList(object):
         self.length -= 1
 
 class Heap(object):
-    def __init__(self, data):
+    def __init__(self, data, cmp = None):
         self.data = data[:]
         self.heap_size = len(data)
+        self.cmp = cmp
 
     def left(self, index):
         return 2*index
@@ -61,9 +62,9 @@ class Heap(object):
         l = self.left(index)
         r = self.right(index)
         largest = index
-        if l < self.heap_size and self.data[l] > self.data[largest]:
+        if l < self.heap_size and self.compare(self.data[l], self.data[largest]) > 0:
             largest = l
-        if r < self.heap_size and self.data[r] > self.data[largest]:
+        if r < self.heap_size and self.compare(self.data[r], self.data[largest]) > 0:
             largest = r
         # If child is largest, exchange with largest child and continue maintain max heap rooted at child
         if largest != index:
@@ -75,12 +76,74 @@ class Heap(object):
         for i in range(self.heap_size//2, -1, -1):
             self.max_heapify(i)
 
+    def compare(self, u, v):
+        if self.cmp == None:
+            if u>v:
+                return 1
+            elif u<v:
+                return 0
+            else:
+                return -1
+        else:
+            return self.cmp(u, v)
+
+    def min_heapify(self, index):
+        l = self.left(index)
+        r = self.right(index)
+        minimal = index
+        if l < self.heap_size and self.compare(self.data[l], self.data[minimal]) < 0:
+            minimal = l
+        if r < self.heap_size and self.compare(self.data[r], self.data[minimal]) < 0:
+            minimal = r
+        # If child is largest, exchange with largest child and continue maintain max heap rooted at child
+        if minimal != index:
+            self.data[index], self.data[minimal] = self.data[minimal], self.data[index]
+            self.max_heapify(minimal)
+
+    def make_min_heap(self):
+        # The index bigger than self.heap_size/2 are leaves, ie. max heap with size 1
+        for i in range(self.heap_size//2, -1, -1):
+            self.min_heapify(i)
+
+
+class MinPriorityQueue(Heap):
+    def __init__(self, data):
+        Heap.__init__(self, data)
+        self.make_min_heap()
+
+    def minimal(self):
+        return self.data[0]
+
+    def insert(self, x):
+        self.data.append(x)
+        self.heap_size += 1
+        index = self.heap_size-1
+        while index > 0 and self.compare(self.data[self.parent(index)], self.data[index]) > 0:
+            self.data[self.parent(index)], self.data[index] = self.data[index], self.data[self.parent(index)]
+            index = self.parent(index)
+
+    def extract_min(self):
+        v = self.data[0]
+        self.data[0] = self.data[self.heap_size-1]
+        self.heap_size -= 1
+        self.min_heapify(0)
+        return v
+
+    def decrease_key(self, index, x):
+        if self.data[index] < x:
+            print("The decreased value is more than original value")
+            return -1
+        self.data[index] = x
+        while index > 0 and self.compare(self.data[self.parent(index)], self.data[index])>0:
+            self.data[self.parent(index)], self.data[index] = self.data[index], self.data[self.parent(index)]
+            index = self.parent(index)
+        return index
+
 
 class MaxPriorityQueue(Heap):
     def __init__(self, data):
         Heap.__init__(self, data)
         self.make_max_heap()
-
 
     def maximum(self):
         return self.data[0]
