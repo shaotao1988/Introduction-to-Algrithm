@@ -47,6 +47,7 @@ class Graph(object):
             v.color = WHITE
             v.parent = None
 
+    # BFS search
     def BFS_visit(self, s):
         self.__init_vertexes()
         if s not in self.__vertexes:
@@ -62,19 +63,31 @@ class Graph(object):
                     to_be_searched.append(u)
             v.color = Color.BLACK
 
+    # DFS search
     def DFS(self):
         self.__init_vertexes()
         for v in self.__vertexes:
             if v.color == Color.WHITE:
-                DFS_visit(G, v)
+                self.DFS_visit(G, v)
 
     def DFS_visit(self, v):
         v.color = Color.GREY
         for u in self.adjs(v):
             if u.color == Color.WHITE:
                 u.parent = v
-                DFS_visit(G, u)
+                self.DFS_visit(G, u)
         v.color = Color.BLACK
+
+    # Find a path starts from s and finishes at f
+    def find_path(self, s, f):
+        if s not in self.__vertexes or f not in self.__vertexes:
+            return []
+        if s == f:
+            return [s]
+        if f.parent == None:
+            return []
+        else:
+            return self.find_path(s, f.parent)+[f]
 
 
 class Edge(object):
