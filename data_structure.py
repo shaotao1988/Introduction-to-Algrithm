@@ -134,7 +134,7 @@ class MinPriorityQueue(Heap):
             print("The decreased value is more than original value")
             return -1
         self.data[index] = x
-        while index > 0 and self.compare(self.data[self.parent(index)], self.data[index])>0:
+        while index > 0 and self.compare(self.data[self.parent(index)], self.data[index]) > 0:
             self.data[self.parent(index)], self.data[index] = self.data[index], self.data[self.parent(index)]
             index = self.parent(index)
         return index
@@ -152,7 +152,7 @@ class MaxPriorityQueue(Heap):
         self.data.append(x)
         self.heap_size += 1
         index = self.heap_size-1
-        while index > 0 and self.data[self.parent(index)] < self.data[index]:
+        while index > 0 and self.compare(self.data[self.parent(index)], self.data[index]) < 0:
             self.data[self.parent(index)], self.data[index] = self.data[index], self.data[self.parent(index)]
             index = self.parent(index)
 
@@ -168,7 +168,7 @@ class MaxPriorityQueue(Heap):
             print("The increased value is less than original value")
             return -1
         self.data[index] = x
-        while index > 0 and self.data[self.parent(index)] < self.data[index]:
+        while index > 0 and self.compare(self.data[self.parent(index)], self.data[index]) < 0:
             self.data[self.parent(index)], self.data[index] = self.data[index], self.data[self.parent(index)]
             index = self.parent(index)
         return index
