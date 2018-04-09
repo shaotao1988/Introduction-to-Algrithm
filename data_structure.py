@@ -180,7 +180,7 @@ class MaxPriorityQueue(Heap):
         if self.heap_size == 0:
             return None
         v = self.data[0]
-        self.data[0] = self.data[self.heap_size-1]
+        self.data[0], self.data[self.heap_size-1] = self.data[self.heap_size-1], self.data[0]
         self.heap_size -= 1
         self.max_heapify(0)
         return v
