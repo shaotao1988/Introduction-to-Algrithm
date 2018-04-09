@@ -1,5 +1,8 @@
 # -*- coding=utf-8 -*-
+import sys
 from enum import Enum
+sys.path.append('..')
+from data_structure import *
 
 """
 WHITE: not visited
@@ -27,6 +30,7 @@ class Graph(object):
         self.add_vertex(s)
         self.add_vertex(f)
         s.add_adj(f)
+        f.add_adj(s)
 
     def add_vertex(self, v):
         if v in self.__vertexes:
@@ -43,7 +47,8 @@ class Graph(object):
 
     def edge(self, s, f):
         for edge in self.__edges:
-            if edge.s == s and edge.f == f:
+            # 无向图
+            if (edge.s == s and edge.f == f) or (edge.s == f and edge.f == s):
                 return edge
         return None
 
@@ -51,6 +56,7 @@ class Graph(object):
         for v in self.__vertexes:
             v.color = Color.WHITE
             v.parent = None
+            v.weight = sys.maxsize
 
     # BFS search
     def BFS_visit(self, s):
@@ -94,6 +100,33 @@ class Graph(object):
         else:
             return self.find_path(s, f.parent)+[f]
 
+    @staticmethod
+    def compare(u, v):
+        return u.weight-v.weight
+
+    """
+    Minimum spaning Tree
+    Input:
+        s: start vertex
+    Output:
+        None, the algrithm sets value for the parent of vertexes in the graph
+    """
+    def MST_Prim(self, s):
+        self.__init_vertexes()
+        s.weight = 0
+        to_be_visited = MinPriorityQueue(self.vertexes, Graph.compare)
+        u=to_be_visited.extract_min()
+        while u != None:
+            for v in self.adjs(u):
+                if to_be_visited.has(v) == False:
+                    continue
+                e = self.edge(u, v)
+                # 每个节点的weight保存的是当前发现的联通到现有MST的最短边的权重
+                if e.weight < v.weight:
+                    to_be_visited.decrease_key(v, e.weight)
+                    v.parent = u
+            u = to_be_visited.extract_min()
+
 
 class Edge(object):
     def __init__(self, s, f, w):
@@ -105,6 +138,7 @@ class Edge(object):
 class Vertex(object):
     def __init__(self, key=-1):
         self.key = key
+        self.weight = sys.maxsize
         self.parent = None
         self.color = Color.WHITE
         self.__adjs = []

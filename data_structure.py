@@ -40,7 +40,7 @@ class LinkedList(object):
 
 class Heap(object):
     def __init__(self, data, cmp = None):
-        self.data = data[:]
+        self.data = data
         self.heap_size = len(data)
         self.cmp = cmp
 
@@ -52,6 +52,17 @@ class Heap(object):
 
     def parent(self, index):
         return index//2
+
+    def has(self, data):
+        index = 0
+        try:
+            index = self.data.index(data)
+        except:
+            return False
+        else:
+            if index >= self.heap_size or index < 0:
+                return False
+            return True
 
     """
     Suggest both children rooted at left(index) and right(index) are max heap
@@ -107,8 +118,8 @@ class Heap(object):
 
 
 class MinPriorityQueue(Heap):
-    def __init__(self, data):
-        Heap.__init__(self, data)
+    def __init__(self, data, cmp):
+        Heap.__init__(self, data, cmp)
         self.make_min_heap()
 
     def minimal(self):
@@ -123,17 +134,26 @@ class MinPriorityQueue(Heap):
             index = self.parent(index)
 
     def extract_min(self):
+        if self.heap_size == 0:
+            return None
         v = self.data[0]
-        self.data[0] = self.data[self.heap_size-1]
+        self.data[0], self.data[self.heap_size-1] = self.data[self.heap_size-1], self.data[0]
         self.heap_size -= 1
         self.min_heapify(0)
         return v
 
-    def decrease_key(self, index, x):
-        if self.data[index] < x:
+    def find_index(self, x):
+        return self.data.index(x)
+
+    def decrease_key(self, x, weight):
+        index = self.data.index(x)
+        if index == -1:
+            print("key is not in queue")
+            return -1
+        if self.data[index].weight < weight:
             print("The decreased value is more than original value")
             return -1
-        self.data[index] = x
+        self.data[index].weight = weight
         while index > 0 and self.compare(self.data[self.parent(index)], self.data[index]) > 0:
             self.data[self.parent(index)], self.data[index] = self.data[index], self.data[self.parent(index)]
             index = self.parent(index)
@@ -157,6 +177,8 @@ class MaxPriorityQueue(Heap):
             index = self.parent(index)
 
     def extract_max(self):
+        if self.heap_size == 0:
+            return None
         v = self.data[0]
         self.data[0] = self.data[self.heap_size-1]
         self.heap_size -= 1
